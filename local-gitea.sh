@@ -14,7 +14,7 @@ CONTAINER_NAME="local-gitea"
 # 0 check prerequisites
 # docker-compose, nc, ssh-keygen
 
-rm -rf "$WORK_DIR"/acc-test/gitea
+rm -rf "$WORK_DIR"/gitea
 
 # 0 check for local ssh key - create if necessary
 if [ ! -f "$SSH_KEY" ]; then
@@ -26,7 +26,7 @@ ssh-add "$SSH_KEY"
 ssh-add -l
 
 # 1 start gitea
-docker-compose -f "$WORK_DIR"/acc-test/docker-compose-gitea.yml up -d
+docker-compose -f "$WORK_DIR"/docker-compose-gitea.yml up -d
 
 # 2 wait until up
 while ! $(nc -z -v -w5 $HOST $PORT); do
