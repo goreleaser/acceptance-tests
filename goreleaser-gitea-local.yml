@@ -1,14 +1,14 @@
 # This is an example goreleaser.yaml file with some sane defaults.
 # Make sure to check the documentation at http://goreleaser.com
-project_name: release-testing
+project_name: acceptance-tests
 
 gitea_urls:
-  api: http://gitea-web:3000/api/v1/
+  api: http://localhost:3000/api/v1/
 
 release:
    gitea:
-     owner: mavogel
-     name: release-testing
+     owner: goreleaser
+     name: acceptance-tests
 before:
   hooks:
     # you may remove this if you don't use vgo
@@ -43,31 +43,31 @@ changelog:
 brews:
   -
     #skip_upload: true
-    name: release-testing
+    name: acceptance-tests
     tap:
-      owner: mavogel
+      owner: goreleaser
       name: homebrew-tap
-    # http://gitea-web:3000/mavogel/release-testing/releases/download/0.3.46/release-testing_0.3.46_Linux_i386.tar.gz  
-    url_template: "http://gitea-web:3000/mavogel/release-testing/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    # http://localhost:3000/goreleaser/acceptance-tests/releases/download/0.3.46/acceptance-tests_0.3.46_Linux_i386.tar.gz  
+    url_template: "http://localhost:3000/goreleaser/acceptance-tests/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     commit_author:
       name: "Manuel Vogel"
-      email: mavogel@posteo.de
+      email: goreleaser@posteo.de
     folder: Formula
-    homepage: "http://gitea-web.com/mavogel/release-testing"
+    homepage: "http://localhost.com/goreleaser/acceptance-tests"
     description: "Software to create fast and easy drum rolls."
     test: |
-      system "#{bin}/release-testing -r"
+      system "#{bin}/acceptance-tests"
     install: |
-      bin.install "release-testing"
+      bin.install "acceptance-tests"
 
 # scoop:
 #   bucket:
-#     owner: mavogel
+#     owner: goreleaser
 #     name: scoop-bucket
-#   url_template: "http://gitea-web:3000/mavogel/release-testing/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
+#   url_template: "http://localhost:3000/goreleaser/acceptance-tests/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
 #   commit_author:
 #     name: "Manuel Vogel"
 #     email: manuel.vogel-extern@deutschebahn.com
-#   homepage: "http://gitea.com/mavogel/release-testing"
+#   homepage: "http://gitea.com/goreleaser/acceptance-tests"
 #   description: "Software to create fast and easy drum rolls."
 #   license: MIT

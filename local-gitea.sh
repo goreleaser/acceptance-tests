@@ -6,7 +6,7 @@ WORK_DIR=$(pwd)
 USER="goreleaser"
 PASSWORD="testpwd123!"
 EMAIL="goreleaser@acme.com"
-SSH_KEY="$HOME/.ssh/id_rsa_goreleaser"
+SSH_KEY="$WORK_DIR/ssh/id_rsa_goreleaser"
 HOST="localhost"
 PORT="3000"
 CONTAINER_NAME="local-gitea"
@@ -15,6 +15,7 @@ CONTAINER_NAME="local-gitea"
 # docker-compose, nc, ssh-keygen
 
 rm -rf "$WORK_DIR"/gitea
+rm -rf "$WORK_DIR"/ssh && mkdir -p "$WORK_DIR"/ssh
 
 # 0 check for local ssh key - create if necessary
 if [ ! -f "$SSH_KEY" ]; then
@@ -40,7 +41,7 @@ sleep 5
 # 3 create goreleaser user
 # this command creates the user and an access token as well
 ACCESS_TOKEN=$(docker exec $CONTAINER_NAME \
-    gitea admin user create \
+    gitea admin create-user \
         --username=${USER} \
         --password=${PASSWORD} \
         --email=${EMAIL} \
@@ -61,24 +62,26 @@ sleep 3
 # add the pub key
 # the 'gitea admin user create' command does not have the option to do this
 # TODO add retry
+echo '##### SSH KEY ######'
 PAYLOAD=$(echo ' 
 { 
     "title": "'${USER}'",
-    "key": "'$(cat ${SSH_KEY}.pub)'",
-    "read_only": false}
+    "key": "'$(cat ${SSH_KEY}.pub | base64)'",
+    "read_only": false
 }
 ')
-curl -f -X POST "http://$HOST:$PORT/api/v1/user/keys" \
+curl -v -f -X POST "http://$HOST:$PORT/api/v1/user/keys" \
     -H "accept: application/json" \
     -H "Authorization: token $ACCESS_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$PAYLOAD" 
 
-# 4 create gorleaser-testing repo
+# 4 create  repo
+echo '##### acceptance-tests repo ######'
 PAYLOAD=$(echo ' 
 {
     "auto_init": false,
-    "name": "goreleaser-testing"
+    "name": "acceptance-tests"
 }
 ')
 curl -f -X POST "http://$HOST:$PORT/api/v1/user/repos" \
@@ -89,6 +92,7 @@ curl -f -X POST "http://$HOST:$PORT/api/v1/user/repos" \
 
 
 # 5 create homebrew-tap repo
+echo '##### homebrew-tap repo ######'
 PAYLOAD=$(echo ' 
 {
     "auto_init": true,
@@ -100,17 +104,6 @@ curl -f -X POST "http://$HOST:$PORT/api/v1/user/repos" \
     -H "Authorization: token $ACCESS_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$PAYLOAD"
-
-# # create readme.file
-# README=$(echo "
-# # homebrew tap
-# ## Usage
-# \`\`\`sh
-# brew tap ${USER}/gitea-tools ssh://git@localhost:222/${USER}/homebrew-tap.git
-# brew install ${USER}/gitea-tools/goreleaser
-# \`\`\`
-# "
-# )
 
 # create the Formula path
 # PAYLOAD=$(echo ' 
@@ -128,5 +121,9 @@ curl -f -X POST "http://$HOST:$PORT/api/v1/user/repos" \
 # 6 push to gitea repo
 # fails atm: https://github.com/wkulhanek/docker-openshift-gitea/issues/9
 #git remote rename origin origin-bak
-#git remote add origin ssh://git@localhost:222/goreleaser/goreleaser-testing.git
+#git remote add origin ssh://git@localhost:222/goreleaser/acceptance-tests.git
+
+#git remote add origin http://localhost:3000/goreleaser/acceptance-tests.git
+#git remote add origin http://"$USER":"$PASSWORD"@localhost:3000/goreleaser/acceptance-tests.git
 ssh -vvvT git@localhost -p 222
+#git push origin chore-initial-setup

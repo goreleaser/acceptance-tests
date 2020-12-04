@@ -5,3 +5,4 @@ acceptance-tests
 gitlab-*
 gitea*
 homebrew-*
+ssh
