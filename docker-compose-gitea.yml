@@ -2,7 +2,8 @@ version: '3.7'
 
 services:
   server:
-    image: gitea/gitea:latest
+    # https://hub.docker.com/r/gitea/gitea/tags
+    image: gitea/gitea:1.12.5
     hostname: local-gitea
     container_name: local-gitea
     environment:
