@@ -1,0 +1,7 @@
+dist/
+bin/
+goreleaser
+acceptance-tests
+gitlab-*
+gitea*
+homebrew-*
