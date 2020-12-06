@@ -125,5 +125,7 @@ curl -f -X POST "http://$HOST:$PORT/api/v1/user/repos" \
 
 #git remote add origin http://localhost:3000/goreleaser/acceptance-tests.git
 #git remote add origin http://"$USER":"$PASSWORD"@localhost:3000/goreleaser/acceptance-tests.git
+# TODO file a bug for ssh key! 
+# -> http://localhost:3000/user/settings/keys
 ssh -vvvT git@localhost -p 222
 #git push origin chore-initial-setup
