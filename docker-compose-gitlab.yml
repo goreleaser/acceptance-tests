@@ -1,10 +1,12 @@
 version: '3.7'
 services:
   gitlab-web:
+    # https://hub.docker.com/r/gitlab/gitlab-ce/tags?page=1&ordering=last_updated 
     #image: gitlab/gitlab-ce:10.5.6-ce.0
     #image: gitlab/gitlab-ce:12.1.4-ce.0
     #image: gitlab/gitlab-ce:11.7.0-ce.0
-    image: gitlab/gitlab-ce:12.9.4-ce.0
+    #image: gitlab/gitlab-ce:12.9.4-ce.0
+    image: gitlab/gitlab-ce:13.6.1-ce.0
     container_name: gitlab-web
     hostname: gitlab-web
     volumes:
