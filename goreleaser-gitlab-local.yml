@@ -3,8 +3,8 @@
 project_name: release-testing
 
 gitlab_urls:
-  api: http://gitlab-web:8080/api/v4/
-  download: http://gitlab-web:8080
+  api: http://localhost:8080/api/v4/
+  download: http://localhost:8080
 
 release:
    gitlab:
@@ -48,12 +48,12 @@ changelog:
 #     gitlab:
 #       owner: mavogel
 #       name: homebrew-tab
-#     url_template: "http://gitlab-web:8080/mavogel/release-testing/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
+#     url_template: "http://localhost:8080/goreleaser/acceptance-tests/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
 #     commit_author:
-#       name: "Manuel Vogel"
+#       name: "goreleaser"
 #       email: "mavogel@posteo.de"
 #     folder: Formula
-#     homepage: "http://gitlab-web:8080/mavogel/release-testing"
+#     homepage: "http://localhost:8080/goreleaser/acceptance-tests"
 #     description: "Software to create fast and easy drum rolls."
 #     test: |
 #       system "#{bin}/release-testing -r"
@@ -64,10 +64,10 @@ changelog:
 #   bucket:
 #     owner: mavogel
 #     name: scoop-bucket
-#   url_template: "http://gitlab-web:8080/mavogel/release-testing/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
+#   url_template: "http://localhost:8080/goreleaser/acceptance-tests/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
 #   commit_author:
-#     name: "Manuel Vogel"
-#     email: manuel.vogel-extern@deutschebahn.com
-#   homepage: "http://gitlab-web:8080/mavogel/release-testing"
+#     name: "goreleaser"
+#     email: goreleaser@acme.com
+#   homepage: "http://localhost:8080/goreleaser/acceptance-tests"
 #   description: "Software to create fast and easy drum rolls."
 #   license: MIT
