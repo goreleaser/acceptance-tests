@@ -15,7 +15,7 @@ automation as possible to set up a local instance.
 cd ../goreleaser && make build && mv ../goreleaser/goreleaser .
 # tag the repo
 git tag 0.1.0
-# create an access token andsave as env GITEA_TOKEN
+# create an access token and save as env GITEA_TOKEN
 # publish locally
 ./goreleaser --config=./goreleaser-gitea-local.yml --debug --rm-dist
 # if it fails 
@@ -26,6 +26,8 @@ http://localhost:3000/goreleaser/acceptance-tests/releases
 
 ## gitlab
 ```sh
+# cleanup local folders
+rm -rf gitlab-*
 # start gitlab
 docker-compose -f docker-compose-gitlab.yml up -d
 # follow log and wait about 12 minutes until every
@@ -36,14 +38,14 @@ docker-compose -f docker-compose-gitlab.yml logs -tf
 http://localhost:8080/
 # login as root
 http://localhost:8080/users/sign_in
-# create a new user
+# create a new user and check the 'admin' box
 ## goreleaser
 ## goreleaser@acme.com
 http://localhost:8080/admin/users/new
 # set the password cuz setting via email is not possible
 # set to 'testpwd123!'
 http://localhost:8080/admin/users/goreleaser/edit
-# logout and login as goreleaser
+# logout and login as goreleaser and maybe set a new password if requested
 http://localhost:8080/users/sign_in
 # create 'acceptance-tests' (private) and 'homebrew-tap' (public) repository 
 http://localhost:8080/projects/new
@@ -51,7 +53,7 @@ http://localhost:8080/projects/new
 cd ../goreleaser && make build && mv ../goreleaser/goreleaser .
 # tag the repo
 git tag 0.1.0
-# create an access token andsave as env GITEA_TOKEN
+# create an access token and save as env GITLAB_TOKEN
 # publish locally
 ./goreleaser --config=./goreleaser-gitlab-local.yml --debug --rm-dist
 ```
