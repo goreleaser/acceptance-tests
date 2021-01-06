@@ -5,9 +5,9 @@ services:
     #image: gitlab/gitlab-ce:10.5.6-ce.0
     #image: gitlab/gitlab-ce:12.1.4-ce.0
     #image: gitlab/gitlab-ce:11.7.0-ce.0
-    #image: gitlab/gitlab-ce:12.9.4-ce.0
+    image: gitlab/gitlab-ce:12.9.4-ce.0
     #image: gitlab/gitlab-ce:12.10.14-ce.0
-    image: gitlab/gitlab-ce:13.6.1-ce.0
+    #image: gitlab/gitlab-ce:13.6.1-ce.0
     container_name: local-gitlab
     hostname: gitlab-web
     volumes:
