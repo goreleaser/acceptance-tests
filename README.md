@@ -61,6 +61,12 @@ http://localhost:8080/projects/new
 cd ../goreleaser && make build && mv goreleaser ../acceptance-tests && cd ../acceptance-tests
 # tag the repo
 git tag 0.1.0
+# clean remotes
+git remote rename origin xyz
+# add the new origin
+git remote add origin http://goreleaser:testpwd123\!@localhost:8080/goreleaser/acceptance-tests.git
+# push it 
+git push origin chore-initial-setup
 # publish locally
 ./goreleaser --config=./goreleaser-gitlab-local.yml --debug --rm-dist
 ```
