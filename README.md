@@ -69,5 +69,7 @@ git remote add origin http://goreleaser:testpwd123\!@localhost:8080/goreleaser/a
 git push origin chore-initial-setup
 # publish locally
 ./goreleaser --config=./goreleaser-gitlab-local.yml --debug --rm-dist
+# see the new release
+http://localhost:8080/goreleaser/acceptance-tests/-/releases
 ```
 
