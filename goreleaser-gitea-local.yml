@@ -40,34 +40,22 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
-# brews:
-#   -
-#     #skip_upload: true
-#     name: acceptance-tests
-#     tap:
-#       owner: goreleaser
-#       name: homebrew-tap
-#     # http://localhost:3000/goreleaser/acceptance-tests/releases/download/0.3.46/acceptance-tests_0.3.46_Linux_i386.tar.gz  
-#     url_template: "http://localhost:3000/goreleaser/acceptance-tests/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-#     commit_author:
-#       name: "Manuel Vogel"
-#       email: goreleaser@posteo.de
-#     folder: Formula
-#     homepage: "http://localhost.com/goreleaser/acceptance-tests"
-#     description: "Software to create fast and easy drum rolls."
-#     test: |
-#       system "#{bin}/acceptance-tests"
-#     install: |
-#       bin.install "acceptance-tests"
-
-# scoop:
-#   bucket:
-#     owner: goreleaser
-#     name: scoop-bucket
-#   url_template: "http://localhost:3000/goreleaser/acceptance-tests/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
-#   commit_author:
-#     name: "Manuel Vogel"
-#     email: manuel.vogel-extern@deutschebahn.com
-#   homepage: "http://gitea.com/goreleaser/acceptance-tests"
-#   description: "Software to create fast and easy drum rolls."
-#   license: MIT
+brews:
+  -
+    #skip_upload: true
+    name: acceptance-tests
+    tap:
+      owner: goreleaser
+      name: homebrew-tap
+    # http://localhost:3000/goreleaser/acceptance-tests/releases/download/0.3.46/acceptance-tests_0.3.46_Linux_i386.tar.gz  
+    url_template: "http://localhost:3000/goreleaser/acceptance-tests/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    commit_author:
+      name: "goreleaser"
+      email: goreleaser@acme.com
+    folder: Formula
+    homepage: "http://localhost:3000/goreleaser/acceptance-tests"
+    description: "Software to create fast and easy drum rolls."
+    test: |
+      system "#{bin}/acceptance-tests"
+    install: |
+      bin.install "acceptance-tests"
