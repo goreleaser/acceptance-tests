@@ -128,7 +128,8 @@ curl -f --silent --output /dev/null "http://$HOST:$PORT/api/v1/repos/${USER}/hom
 #git remote add gitea-ssh ssh://git@localhost:222/goreleaser/acceptance-tests.git
 
 #git remote add origin http://localhost:3000/goreleaser/acceptance-tests.git
-git remote remove gitea-http
+git remote remove origin || echo "origin remote does not exist"
+git remote remove gitea-http || echo "gitea-http remote does not exist"
 git remote add gitea-http http://"$USER":"$PASSWORD"@localhost:3000/goreleaser/acceptance-tests.git
 # TODO file a bug for ssh key! 
 # -> http://localhost:3000/user/settings/keys
