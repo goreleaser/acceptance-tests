@@ -9,19 +9,26 @@ automation as possible to set up a local instance.
 ```sh
 # starts and initializes a local server
 ./local-gitea.sh
-# shutdown
-./shutdown.sh
+# rename the git remote
+git remote rename gitea-http origin
+# the the gitea UI and login with USER PASSWORD from 'local-gitea.sh
+open http://localhost:3000/
 # build the goreleaser binary you want to test
-cd ../goreleaser && make build && mv ../goreleaser/goreleaser .
+cd ../goreleaser && make build && mv goreleaser ../acceptance-tests && cd ../acceptance-tests
 # tag the repo
 git tag 0.1.0
 # create an access token and save as env GITEA_TOKEN
-# publish locally
+http://localhost:3000/user/settings/applications
+# export it
+export GITEA_TOKEN="abc"
+# publish the binaries to the local gitea
 ./goreleaser --config=./goreleaser-gitea-local.yml --debug --rm-dist
 # if it fails 
 git tag -d 0.1.0
 # delete the tag by hand at
 http://localhost:3000/goreleaser/acceptance-tests/releases
+# shutdown
+./shutdown.sh
 ```
 
 ## gitlab

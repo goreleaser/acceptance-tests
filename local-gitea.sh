@@ -14,6 +14,8 @@ CONTAINER_NAME="local-gitea"
 # 0 check prerequisites
 # docker-compose, nc, ssh-keygen
 
+ssh-add -D
+docker-compose -f "$WORK_DIR"/docker-compose-gitea.yml down
 rm -rf "$WORK_DIR"/gitea
 rm -rf "$WORK_DIR"/ssh && mkdir -p "$WORK_DIR"/ssh
 
@@ -35,7 +37,7 @@ while ! $(nc -z -v -w5 $HOST $PORT); do
     sleep 2
 done
 echo "'$HOST/$PORT' is up. Continuing."
-# TODO add until with curl
+# gitea exposes the port but need some internal time to be fully available
 sleep 5
 
 # 3 create goreleaser user
@@ -62,21 +64,22 @@ sleep 3
 # add the pub key
 # the 'gitea admin user create' command does not have the option to do this
 # TODO add retry
-echo '##### SSH KEY ######'
-PAYLOAD=$(echo ' 
-{ 
-    "title": "'${USER}'",
-    "key": "'$(cat ${SSH_KEY}.pub | base64)'",
-    "read_only": false
-}
-')
-curl -v -f -X POST "http://$HOST:$PORT/api/v1/user/keys" \
-    -H "accept: application/json" \
-    -H "Authorization: token $ACCESS_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "$PAYLOAD" 
+# echo '##### Add SSH KEY ######'
+# PAYLOAD=$(echo ' 
+# { 
+#     "title": "'${USER}'",
+#     "key": "'$(cat ${SSH_KEY}.pub | base64)'",
+#     "read_only": false
+# }
+# ')
+# echo "Payload: $PAYLOAD"
+# curl -v -f -X POST "http://$HOST:$PORT/api/v1/user/keys" \
+#     -H "accept: application/json" \
+#     -H "Authorization: token $ACCESS_TOKEN" \
+#     -H "Content-Type: application/json" \
+#     -d "$PAYLOAD" 
 
-# 4 create  repo
+# 4 create repo
 echo '##### acceptance-tests repo ######'
 PAYLOAD=$(echo ' 
 {
@@ -84,7 +87,7 @@ PAYLOAD=$(echo '
     "name": "acceptance-tests"
 }
 ')
-curl -f -X POST "http://$HOST:$PORT/api/v1/user/repos" \
+curl -f --silent --output /dev/null "http://$HOST:$PORT/api/v1/user/repos" \
     -H "accept: application/json" \
     -H "Authorization: token $ACCESS_TOKEN" \
     -H "Content-Type: application/json" \
@@ -99,33 +102,38 @@ PAYLOAD=$(echo '
     "name": "homebrew-tap"
 }
 ')
-curl -f -X POST "http://$HOST:$PORT/api/v1/user/repos" \
+curl -f --silent --output /dev/null "http://$HOST:$PORT/api/v1/user/repos" \
     -H "accept: application/json" \
     -H "Authorization: token $ACCESS_TOKEN" \
     -H "Content-Type: application/json" \
     -d "$PAYLOAD"
 
 # create the Formula path
-# PAYLOAD=$(echo ' 
-# {
-#   "content": "",
-#   "message": "chore: adds Formula folder"
-# }
-# ')
-# curl -f -X POST "http://$HOST:$PORT/api/v1/repos/${USER}/homebrew-tap/contents/Formula/.gitkeep" \
-#     -H "accept: application/json" \
-#     -H "Authorization: token $ACCESS_TOKEN" \
-#     -H "Content-Type: application/json" \
-#     -d "$PAYLOAD"
+echo '##### homebrew-tap repo: add Formula folder ######'
+PAYLOAD=$(echo ' 
+{
+  "content": "",
+  "message": "chore: adds Formula folder"
+}
+')
+curl -f --silent --output /dev/null "http://$HOST:$PORT/api/v1/repos/${USER}/homebrew-tap/contents/Formula/.gitkeep" \
+    -H "accept: application/json" \
+    -H "Authorization: token $ACCESS_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "$PAYLOAD"
 
 # 6 push to gitea repo
 # fails atm: https://github.com/wkulhanek/docker-openshift-gitea/issues/9
 #git remote rename origin origin-bak
-#git remote add origin ssh://git@localhost:222/goreleaser/acceptance-tests.git
+#git remote add gitea-ssh ssh://git@localhost:222/goreleaser/acceptance-tests.git
 
 #git remote add origin http://localhost:3000/goreleaser/acceptance-tests.git
-#git remote add origin http://"$USER":"$PASSWORD"@localhost:3000/goreleaser/acceptance-tests.git
+git remote remove gitea-http
+git remote add gitea-http http://"$USER":"$PASSWORD"@localhost:3000/goreleaser/acceptance-tests.git
 # TODO file a bug for ssh key! 
 # -> http://localhost:3000/user/settings/keys
-ssh -vvvT git@localhost -p 222
+# ssh -vvvT git@localhost -p 222
 #git push origin chore-initial-setup
+git push gitea-http chore-initial-setup
+#git remote rename gitea-http origin
+#open http://localhost:3000/
