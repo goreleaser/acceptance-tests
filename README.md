@@ -34,6 +34,7 @@ http://localhost:3000/goreleaser/acceptance-tests/releases
 ## gitlab
 See https://docs.gitlab.com/omnibus/docker
 ```sh
+# The path structure must not be too deep or gitaly cannot create a socket
 # see https://gitlab.com/gitlab-org/gitaly/-/issues/2311
 export GITLAB_HOME=$HOME/gitlab
 # cleanup local folders
