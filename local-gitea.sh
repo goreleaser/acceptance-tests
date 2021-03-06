@@ -14,7 +14,6 @@ CONTAINER_NAME="local-gitea"
 # 0 check prerequisites
 # docker-compose, nc, ssh-keygen
 
-ssh-add -D
 docker-compose -f "$WORK_DIR"/docker-compose-gitea.yml down
 rm -rf "$WORK_DIR"/gitea
 rm -rf "$WORK_DIR"/ssh && mkdir -p "$WORK_DIR"/ssh
