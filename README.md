@@ -5,7 +5,18 @@ Currently we test `homebrew-taps` for `gitlab` and `gitea` with a local
 setup and some manual steps. To simplify this process we provide as much
 automation as possible to set up a local instance.
 
+The setup assumes that you have the actual [goreleaser](https://github.com/goreleaser/goreleaser)
+repository in the same directory level
+
+```console
+.
+├── acceptance-tests
+├── goreleaser
+```
+
 ## gitea
+
+Follow the steps to setup the local instance:
 ```sh
 # starts and initializes a local server
 ./local-gitea.sh
@@ -27,12 +38,17 @@ export GITEA_TOKEN="abc"
 git tag -d 0.1.0
 # delete the tag by hand at
 http://localhost:3000/goreleaser/acceptance-tests/releases
-# shutdown
+
+# shutdown when your finished
 ./shutdown.sh
 ```
 
 ## gitlab
-See https://docs.gitlab.com/omnibus/docker
+For the gitlab installation we currently have only manual steps. We suggest keeping the 
+directories in the `$GITLAB_HOME` directory and remove then only when using a new image tag.
+Also due to the fact that the full setup takes around 12 minutes.
+
+Follow the steps to setup the local instance:
 ```sh
 # The path structure must not be too deep or gitaly cannot create a socket
 # see https://gitlab.com/gitlab-org/gitaly/-/issues/2311

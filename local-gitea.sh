@@ -60,9 +60,9 @@ fi
 
 sleep 3
 
+# Note: ssh fails atm
 # add the pub key
 # the 'gitea admin user create' command does not have the option to do this
-# TODO add retry
 # echo '##### Add SSH KEY ######'
 # PAYLOAD=$(echo ' 
 # { 
@@ -122,7 +122,7 @@ curl -f --silent --output /dev/null "http://$HOST:$PORT/api/v1/repos/${USER}/hom
     -d "$PAYLOAD"
 
 # 6 push to gitea repo
-# fails atm: https://github.com/wkulhanek/docker-openshift-gitea/issues/9
+# ssh fails atm: https://github.com/wkulhanek/docker-openshift-gitea/issues/9
 #git remote rename origin origin-bak
 #git remote add gitea-ssh ssh://git@localhost:222/goreleaser/acceptance-tests.git
 
@@ -130,10 +130,9 @@ curl -f --silent --output /dev/null "http://$HOST:$PORT/api/v1/repos/${USER}/hom
 git remote remove origin || echo "origin remote does not exist"
 git remote remove gitea-http || echo "gitea-http remote does not exist"
 git remote add gitea-http http://"$USER":"$PASSWORD"@localhost:3000/goreleaser/acceptance-tests.git
-# TODO file a bug for ssh key! 
+
+# TODO file a bug for ssh key creation via API! 
 # -> http://localhost:3000/user/settings/keys
 # ssh -vvvT git@localhost -p 222
-#git push origin chore-initial-setup
+
 git push gitea-http chore-initial-setup
-#git remote rename gitea-http origin
-#open http://localhost:3000/
