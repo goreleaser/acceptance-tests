@@ -1,0 +1,61 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+project_name: acceptance-tests
+
+gitea_urls:
+  api: http://localhost:3000/api/v1/
+
+release:
+   gitea:
+     owner: goreleaser
+     name: acceptance-tests
+before:
+  hooks:
+    # you may remove this if you don't use vgo
+    - go mod download
+builds:
+- env:
+  - CGO_ENABLED=0
+  goos:
+    - linux
+    - darwin
+    - windows
+  goarch:
+    - 386
+    - amd64
+archives:
+- replacements:
+    darwin: Darwin
+    linux: Linux
+    windows: Windows
+    386: i386
+    amd64: x86_64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+brews:
+  -
+    #skip_upload: true
+    name: acceptance-tests
+    tap:
+      owner: goreleaser
+      name: homebrew-tap
+    # http://localhost:3000/goreleaser/acceptance-tests/releases/download/0.3.46/acceptance-tests_0.3.46_Linux_i386.tar.gz  
+    url_template: "http://localhost:3000/goreleaser/acceptance-tests/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    commit_author:
+      name: "goreleaser"
+      email: goreleaser@acme.com
+    folder: Formula
+    homepage: "http://localhost:3000/goreleaser/acceptance-tests"
+    description: "Software to create fast and easy drum rolls."
+    test: |
+      system "#{bin}/acceptance-tests"
+    install: |
+      bin.install "acceptance-tests"

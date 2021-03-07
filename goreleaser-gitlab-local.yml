@@ -1,0 +1,73 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+project_name: acceptance-tests
+
+gitlab_urls:
+  api: http://localhost:8080/api/v4/
+  download: http://localhost:8080
+
+release:
+   gitlab:
+     owner: goreleaser
+     name: acceptance-tests
+before:
+  hooks:
+    # you may remove this if you don't use vgo
+    - go mod download
+builds:
+- env:
+  - CGO_ENABLED=0
+  goos:
+    - linux
+    - darwin
+    - windows
+  goarch:
+    - 386
+    - amd64
+archives:
+- replacements:
+    darwin: Darwin
+    linux: Linux
+    windows: Windows
+    386: i386
+    amd64: x86_64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+# brews:
+#   -
+#     #skip_upload: true
+#     name: release-testing
+#     gitlab:
+#       owner: mavogel
+#       name: homebrew-tab
+#     url_template: "http://localhost:8080/goreleaser/acceptance-tests/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
+#     commit_author:
+#       name: "goreleaser"
+#       email: "mavogel@posteo.de"
+#     folder: Formula
+#     homepage: "http://localhost:8080/goreleaser/acceptance-tests"
+#     description: "Software to create fast and easy drum rolls."
+#     test: |
+#       system "#{bin}/release-testing -r"
+#     install: |
+#       bin.install "release-testing"
+
+# scoop:
+#   bucket:
+#     owner: mavogel
+#     name: scoop-bucket
+#   url_template: "http://localhost:8080/goreleaser/acceptance-tests/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
+#   commit_author:
+#     name: "goreleaser"
+#     email: goreleaser@acme.com
+#   homepage: "http://localhost:8080/goreleaser/acceptance-tests"
+#   description: "Software to create fast and easy drum rolls."
+#   license: MIT
