@@ -82,7 +82,7 @@ export GITLAB_TOKEN="abc"
 # create 'acceptance-tests' (private) and 'homebrew-tap' (public) repository 
 http://localhost:8080/projects/new
 # build the goreleaser binary you want to test
-cd ../goreleaser && make build && mv goreleaser ../acceptance-tests && cd ../acceptance-tests
+cd ../goreleaser && make build && mv -f goreleaser ../acceptance-tests && cd ../acceptance-tests
 # tag the repo
 git tag 0.1.0
 # clean remotes
