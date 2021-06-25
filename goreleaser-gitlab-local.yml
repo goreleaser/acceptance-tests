@@ -41,24 +41,24 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
-# brews:
-#   -
-#     #skip_upload: true
-#     name: release-testing
-#     gitlab:
-#       owner: mavogel
-#       name: homebrew-tab
-#     url_template: "http://localhost:8080/goreleaser/acceptance-tests/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
-#     commit_author:
-#       name: "goreleaser"
-#       email: "mavogel@posteo.de"
-#     folder: Formula
-#     homepage: "http://localhost:8080/goreleaser/acceptance-tests"
-#     description: "Software to create fast and easy drum rolls."
-#     test: |
-#       system "#{bin}/release-testing -r"
-#     install: |
-#       bin.install "release-testing"
+brews:
+  -
+    #skip_upload: true
+    name: acceptance-tests
+    tap:
+      owner: goreleaser
+      name: homebrew-tap
+    url_template: "http://localhost:8080/goreleaser/acceptance-tests/-/releases/{{ .Tag }}/downloads/{{ .ArtifactName }}"
+    commit_author:
+      name: "goreleaser"
+      email: "mavogel@posteo.de"
+    folder: Formula
+    homepage: "http://localhost:8080/goreleaser/acceptance-tests"
+    description: "Software to create fast and easy release tests."
+    test: |
+      system "#{bin}/acceptance-tests"
+    install: |
+      bin.install "acceptance-tests"
 
 # scoop:
 #   bucket:
