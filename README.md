@@ -54,7 +54,7 @@ Follow the steps to setup the local instance:
 # see https://gitlab.com/gitlab-org/gitaly/-/issues/2311
 export GITLAB_HOME=$HOME/gitlab
 # cleanup local folders
-rm -rf gitlab/config gitlab/data gitlab/logs
+rm -rf $GITLAB_HOME/config $GITLAB_HOME/data $GITLAB_HOME/logs
 # start gitlab
 docker-compose -f docker-compose-gitlab.yml up -d
 # follow log and wait about 12 minutes until every
@@ -90,7 +90,7 @@ git remote rename origin xyz
 # add the new origin
 git remote add origin http://goreleaser:testpwd123\!@localhost:8080/goreleaser/acceptance-tests.git
 # push it 
-git push origin chore-initial-setup
+git push origin main
 # publish locally
 ./goreleaser --config=./goreleaser-gitlab-local.yml --debug --rm-dist
 # see the new release
