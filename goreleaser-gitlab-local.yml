@@ -3,8 +3,8 @@
 project_name: acceptance-tests
 
 gitlab_urls:
-  api: http://localhost:8080/api/v4/
-  download: http://localhost:8080
+  api: http://localhost:10080/api/v4/
+  download: http://localhost:10080
 
 release:
    gitlab:
@@ -48,12 +48,12 @@ brews:
     tap:
       owner: goreleaser
       name: homebrew-tap
-    url_template: "http://localhost:8080/goreleaser/acceptance-tests/-/releases/{{ .Tag }}/downloads/{{ .ArtifactName }}"
+    url_template: "http://localhost:10080/goreleaser/acceptance-tests/-/releases/{{ .Tag }}/downloads/{{ .ArtifactName }}"
     commit_author:
       name: "goreleaser"
       email: "mavogel@posteo.de"
     folder: Formula
-    homepage: "http://localhost:8080/goreleaser/acceptance-tests"
+    homepage: "http://localhost:10080/goreleaser/acceptance-tests"
     description: "Software to create fast and easy release tests."
     test: |
       system "#{bin}/acceptance-tests"
@@ -64,10 +64,10 @@ brews:
 #   bucket:
 #     owner: mavogel
 #     name: scoop-bucket
-#   url_template: "http://localhost:8080/goreleaser/acceptance-tests/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
+#   url_template: "http://localhost:10080/goreleaser/acceptance-tests/uploads/{{ .ArtifactUploadHash }}/{{ .ArtifactName }}"
 #   commit_author:
 #     name: "goreleaser"
 #     email: goreleaser@acme.com
-#   homepage: "http://localhost:8080/goreleaser/acceptance-tests"
+#   homepage: "http://localhost:10080/goreleaser/acceptance-tests"
 #   description: "Software to create fast and easy drum rolls."
 #   license: MIT
