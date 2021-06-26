@@ -8,7 +8,7 @@ gitlab_urls:
 
 release:
    gitlab:
-     owner: goreleaser
+     owner: "" # explicitly use the projectID 
      name: acceptance-tests
 before:
   hooks:
