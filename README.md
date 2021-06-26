@@ -58,29 +58,29 @@ rm -rf $GITLAB_HOME/config $GITLAB_HOME/data $GITLAB_HOME/logs
 # start gitlab
 docker-compose -f docker-compose-gitlab.yml up -d
 # follow log and wait about 12 minutes until every
-# while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080)" != "302" ]]; do echo "zzz..."; sleep 5; done
+# while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:10080)" != "302" ]]; do echo "zzz..."; sleep 5; done
 docker-compose -f docker-compose-gitlab.yml logs -tf
 # terminal 2
-# curl -v localhost:8080/api/v4
+# curl -v localhost:10080/api/v4
 # register new root user -> set password root123!
-http://localhost:8080/
+http://localhost:10080/
 # login as root
-http://localhost:8080/users/sign_in
+http://localhost:10080/users/sign_in
 # create a new user and check the 'admin' box
 ## goreleaser
 ## goreleaser@acme.com
-http://localhost:8080/admin/users/new
+http://localhost:10080/admin/users/new
 # set the password cuz setting via email is not possible
 # set to 'testpwd123!'
-http://localhost:8080/admin/users/goreleaser/edit
+http://localhost:10080/admin/users/goreleaser/edit
 # logout and login as goreleaser and maybe set a new password if requested
-http://localhost:8080/users/sign_in
+http://localhost:10080/users/sign_in
 # create an access token with API scope
-http://localhost:8080/profile/personal_access_tokens
+http://localhost:10080/profile/personal_access_tokens
 # export it
 export GITLAB_TOKEN="abc"
 # create 'acceptance-tests' (private) and 'homebrew-tap' (public) repository 
-http://localhost:8080/projects/new
+http://localhost:10080/projects/new
 # build the goreleaser binary you want to test
 cd ../goreleaser && make build && mv -f goreleaser ../acceptance-tests && cd ../acceptance-tests
 # tag the repo
@@ -88,12 +88,12 @@ git tag 0.1.0
 # clean remotes
 git remote rename origin xyz
 # add the new origin
-git remote add origin http://goreleaser:testpwd123\!@localhost:8080/goreleaser/acceptance-tests.git
+git remote add origin http://goreleaser:testpwd123\!@localhost:10080/goreleaser/acceptance-tests.git
 # push it 
 git push origin main
 # publish locally
 ./goreleaser --config=./goreleaser-gitlab-local.yml --debug --rm-dist
 # see the new release
-http://localhost:8080/goreleaser/acceptance-tests/-/releases
+http://localhost:10080/goreleaser/acceptance-tests/-/releases
 ```
 
