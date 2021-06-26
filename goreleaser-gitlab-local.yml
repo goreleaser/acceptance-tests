@@ -8,8 +8,8 @@ gitlab_urls:
 
 release:
    gitlab:
-     owner: "" # explicitly use the projectID 
-     name: acceptance-tests
+     owner: "" 
+     name: 2 # explicitly use the projectID 
 before:
   hooks:
     # you may remove this if you don't use vgo
